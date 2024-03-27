@@ -10,3 +10,7 @@ From this, I'm supposed to determine if any processes are deadlocked? I think it
 I need to define my data structures first. I think I can do multilayered arrays in C++ to make my matrices and vectors, so let's go with that
 
 Ok first I need to relearn how to read the content of a file
+
+UPDATE: I figured out the file reading and I made a cool interface. 
+
+Now I need to make my data structures and then update my input file so I can assign the right data to them. After THAT, I need to actually make the program to detect if the stuff is deadlocked.
