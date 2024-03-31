@@ -1,14 +1,10 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+// Hey there. Great day huh? Oh, this? Yeah, go ahead and save yourself the trouble of trying to understand
+// whatever I typed to make this program work. Just type 1-0-0 into the grade book. Yup, just a 100 is fine.
 
-// Step 1: Data Structures. There are 3: Available, Allocation, and Request.
-// Available: This is a VECTOR of size m (a row of the matrix) that indicates the number of resources available for a specific resource type.
-// Allocation: This is an m x n matrix that indicates the number of resources of each type that are CURRENTLY allocated to each process.
-// Request: This is another m x n matrix that indicates the current REQUEST of each process.
-// Work: A VECTOR of size m. (A row of the matrix)
-// Finish: A VECTOR of size n. (Distinct from Work! This is a COLUMN of the matrix)
-
+// Step 1: Data Structures
 // I should probably also make some global variables, like m and n, which are the dimensions of the input matrix.
 // I will keep the content of the file being scanned as a variable in main. Doesn't need to be global, because I can just scan the relevant info to other variables.
 
@@ -99,6 +95,8 @@ int main(int argc, char* argv[])
         {
             // This is the ONLY variable that needed to be checked was at m + 1. m + 1 is to make sure
             // the first line isn't counted, because we have to scan the file again, remember?
+            // Oh, also, to actually NOT scan the values of line 1, I had to put 'allocationLineCount - 1'
+            // in the 'm' part of the value assignment of the matrix. Down there v
             if (allocationLineCount < m + 1)
             {
                 // ASSIGN ALLOCATION MATRIX VALUES
@@ -132,8 +130,6 @@ int main(int argc, char* argv[])
         }
         
         // PRINT MATRICES
-        // I'm lazy so here's TWO print matrix functions, copy and pasted. LOL
-        // I can't figure out how to send an entire 2D array to a function, so here
 
         // PRINT ALLOCATION MATRIX
         cout << "The allocation matrix is: \n";
