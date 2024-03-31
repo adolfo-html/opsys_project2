@@ -26,7 +26,8 @@ int main(int argc, char* argv[])
     // This step checks if you've passed an argument or not. If not, doesn't run the main program.
     // Also you need to have your program check if there are any arguments FIRST before you try to 
     // access the arguments. Otherwise, you'll end up with a segmentation fault if there are no arguments.
-    if (argc == 1)
+    
+    if (argc == 1) // You running a.out counts as an argument. Huh!
     {
         // Interface
         cout << "Welcome to my second project.\n\n";
@@ -44,11 +45,6 @@ int main(int argc, char* argv[])
         string fileName = argv[1];
 
         // I forgor how to read content from a file :skull:
-        // STEPS to reading the content of a file:
-        // 1. Create a stream object.
-        // 2. Connect it to a file on disk. (probably the fstream function)
-        // 3. Read the file's contents into our stream object. (We need a string function declared beforehand for this)
-        // 4. Close the file. 
 
         string contentText;
 
@@ -66,21 +62,13 @@ int main(int argc, char* argv[])
             // was returning 51 earlier. But anyway, that's what makes it work.
             // That's how the char data type works. The character 'A' has an ASCII value of 65.
             // So if you wanted to, you could declare this character by saying char lettera = 64 + 1;.
-            cout << contentText << "\n";
             if (lineCount == 0)
             {
                 m = contentText[0] - '0';
                 n = contentText[2] - '0';
             }
-
             lineCount++;
         }
-
-        // REMBER:
-        // m is the number of rows.
-        // n is the number of columns.
-        cout << "m equals: " << m << "\n";
-        cout << "n equals: " << n << "\n";
 
         // Erm it didn't let me declare this because I put it right next to int m, n; which makes
         // the value of m and n garbage data. 
@@ -92,27 +80,63 @@ int main(int argc, char* argv[])
         // The m x n matrix that indicates the number of resources of each type currently allocated to each process.
         int allocation[m][n];
 
+        // The m x n matrix that indicates the current request of each process.
+        int request[m][n];
+
+        // The VECTOR, of size n, that indicates the number of available resources of each type.
+        int available[n];
+
         // I have to run this function again because the last one gave me the variables I need to be able
         // to use these variables.
 
         ifstream file2(fileName);
 
         // ASSIGN MATRIX VALUES
-        lineCount = 0;
+        int allocationLineCount = 0;
+        int requestLineCount = 0;
+        int availableLineCount = 0;
         while (getline(file2, contentText))
         {
-            if (lineCount != 0)
+            // This is the ONLY variable that needed to be checked was at m + 1. m + 1 is to make sure
+            // the first line isn't counted, because we have to scan the file again, remember?
+            if (allocationLineCount < m + 1)
             {
-                // ASSIGN MATRIX VALUES
+                // ASSIGN ALLOCATION MATRIX VALUES
                 for(int i = 0; i < n; i++)
                 {
-                    allocation[lineCount - 1][i] = contentText[0 + (2 * i)] - '0';
+                    allocation[allocationLineCount - 1][i] = contentText[0 + (2 * i)] - '0';
                 }
+                allocationLineCount++;
             }
-            cout << "+ Allocation matrix values assigned\n";
-            lineCount++;
+            // Yeah, and each one of these else if conditions is checked SEQUENTIALLY. So if one is
+            // true, it stops at what's under the true condition and runs that segment. Nothing else. Cool
+            // And yeah that's what was stopping availableLineCount from being counted here. I was checking
+            // requestLineCount < m + 1 when it should have just been m, because we're back on track.
+            else if (requestLineCount < m)
+            {
+                // ASSIGN REQUEST MATRIX VALUES
+                for(int i = 0; i < n; i++)
+                {
+                    request[requestLineCount][i] = contentText[0 + (2 * i)] - '0';
+                }
+                requestLineCount++;
+            }
+            else if (availableLineCount < m)
+            {
+                for(int i = 0; i < n; i++)
+                {
+                    available[i] = contentText[0 + (2 * i)] - '0';
+                }
+                availableLineCount++;
+            }
         }
-        // Print an entire matrix
+        
+        // PRINT MATRICES
+        // I'm lazy so here's TWO print matrix functions, copy and pasted. LOL
+        // I can't figure out how to send an entire 2D array to a function, so here
+
+        // PRINT ALLOCATION MATRIX
+        cout << "The allocation matrix is: \n";
         for (int i = 0; i < m; i++)
         {
             for (int j = 0; j < n; j++)
@@ -122,7 +146,28 @@ int main(int argc, char* argv[])
             cout << "\n";
         }
         cout << "\n";
+
+        // PRINT REQUEST MATRIX
+        cout << "The request matrix is: \n";
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                cout << request[i][j] << " ";
+            }
+            cout << "\n";
+        }
+        cout << "\n";
+
+        // PRINT AVAILABLE VECTOR
+        cout << "The available vector is: \n";
+        for (int i = 0; i < n; i++)
+        {
+            cout << available[i] << " ";
+        }
+        cout << "\n";
     }
+
 
     return 0;
 }
